@@ -1,6 +1,6 @@
 export class User {
   constructor(
-    private readonly id: string,
+    private readonly extern_id: string,
     private name: string,
     private nickname: string,
     private email: string,
@@ -8,7 +8,7 @@ export class User {
   ) {}
 
   public getId(): string {
-    return this.id;
+    return this.extern_id;
   }
   public getName(): string {
     return this.name;
