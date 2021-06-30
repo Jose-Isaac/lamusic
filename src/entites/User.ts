@@ -7,10 +7,11 @@ export class User {
     private password: string,
     private role?: string,
     private created_at?: Date,
-    private updated_at?: Date
+    private updated_at?: Date,
+    private readonly id?: number
   ) {}
 
-  public getId(): string {
+  public getExternId(): string {
     return this.extern_id;
   }
   public getName(): string {
