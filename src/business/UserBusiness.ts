@@ -2,6 +2,7 @@ import { UserDatabase } from '../data/UserDatabase';
 import { User } from '../entites/User';
 import { ConflictError } from '../error/ConflictError';
 import { MissingDependenciesError } from '../error/MissingDependenciesError';
+import { Authenticator } from '../services/Authenticator';
 import { EmailFormatValidator } from '../services/EmailFormatValidator';
 import { HashManager } from '../services/HashManager';
 import { IdGenerator } from '../services/IdGenerator';
@@ -9,7 +10,7 @@ import { PasswordFormatValidator } from '../services/PasswordFormatValidator';
 import { userInputDTO } from '../types/user';
 
 export class UserBusiness {
-  public async signup(input: userInputDTO) {
+  public async signup(input: userInputDTO): Promise<string> {
     const { name, nickname, email, password } = input;
 
     if (!name || !nickname || !email || !password) {
@@ -37,7 +38,15 @@ export class UserBusiness {
     const hashManager = new HashManager();
     const hashPassword = await hashManager.hash(password);
 
-    const user = new User(id, name, nickname, email, hashPassword);
-    await userDatabase.create(user);
+    const userForDatabase = new User(id, name, nickname, email, hashPassword);
+    const user = await userDatabase.create(userForDatabase);
+
+    const authenticator = new Authenticator();
+    const token = authenticator.generateToken({
+      id: user.getId(),
+      role: user.getRole(),
+    });
+
+    return token;
   }
 }
