@@ -8,7 +8,7 @@ export class UserDatabase extends BaseDatabase {
     try {
       await this.getConnection().insert(user).into(UserDatabase.TABLE_NAME);
 
-      const userDatabase = await this.getById(user.getId());
+      const userDatabase = await this.getById(user.getExternId());
 
       return userDatabase as User;
     } catch (error) {
@@ -52,6 +52,7 @@ export class UserDatabase extends BaseDatabase {
 
   private toUserModel(result: any): User {
     const {
+      id,
       extern_id,
       name,
       nickname,
@@ -70,7 +71,8 @@ export class UserDatabase extends BaseDatabase {
       password,
       role,
       created_at,
-      updated_at
+      updated_at,
+      id
     );
 
     return user;
