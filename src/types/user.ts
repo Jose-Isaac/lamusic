@@ -4,3 +4,8 @@ export type userInputDTO = {
   password: any;
   email: any;
 };
+
+export type AuthenticationData = {
+  id: string;
+  role?: string;
+};
