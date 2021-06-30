@@ -23,7 +23,7 @@ export class UserDatabase extends BaseDatabase {
         .where({ email })
         .into(UserDatabase.TABLE_NAME);
 
-      if (!result[0].name) {
+      if (!result.length || !result[0].name) {
         return false;
       }
 
@@ -40,7 +40,7 @@ export class UserDatabase extends BaseDatabase {
         .where({ extern_id: id })
         .into(UserDatabase.TABLE_NAME);
 
-      if (!result[0].name) {
+      if (!result.length || !result[0].name) {
         return false;
       }
 

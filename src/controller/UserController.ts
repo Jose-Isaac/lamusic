@@ -17,6 +17,8 @@ export class UserController {
 
       response.json({ message: 'Success', token });
     } catch (error) {
+      console.log(error);
+
       response
         .status(error.code || 500)
         .json({ message: error.sqlMessage || error.message });
