@@ -7,7 +7,7 @@ import { EmailFormatValidator } from '../services/EmailFormatValidator';
 import { HashManager } from '../services/HashManager';
 import { IdGenerator } from '../services/IdGenerator';
 import { PasswordFormatValidator } from '../services/PasswordFormatValidator';
-import { userInputDTO } from '../types/user';
+import { userAuthenticatorCredentials, userInputDTO } from '../types/user';
 
 export class UserBusiness {
   public async signup(input: userInputDTO): Promise<string> {
@@ -48,5 +48,24 @@ export class UserBusiness {
     });
 
     return token;
+  }
+
+  public async login(input: userAuthenticatorCredentials): Promise<User> {
+    const { email, password } = input;
+
+    if (!email || !password) {
+      throw new MissingDependenciesError(
+        'Missing dependencies: "email" and "password"'
+      );
+    }
+
+    const emailFormatValidator = new EmailFormatValidator();
+    emailFormatValidator.validate(email);
+
+    const passwordFormatValidator = new PasswordFormatValidator();
+    passwordFormatValidator.validate(password);
+
+    const userDatabase = new UserDatabase();
+    const user = userDatabase.getByEmail(email);
   }
 }
