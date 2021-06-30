@@ -1,5 +1,4 @@
 import { User } from '../entites/User';
-import { NotFoundError } from '../error/NotFoundError';
 import { BaseDatabase } from './BaseDatabase';
 
 export class UserDatabase extends BaseDatabase {
@@ -11,7 +10,7 @@ export class UserDatabase extends BaseDatabase {
 
       const userDatabase = await this.getById(user.getId());
 
-      return userDatabase;
+      return userDatabase as User;
     } catch (error) {
       throw new Error(error.sqlMessage || error.message);
     }

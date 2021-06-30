@@ -1,7 +1,9 @@
 import { UserDatabase } from '../data/UserDatabase';
 import { User } from '../entites/User';
 import { ConflictError } from '../error/ConflictError';
+import { InvalidCredentialsError } from '../error/InvalidCredentialsError';
 import { MissingDependenciesError } from '../error/MissingDependenciesError';
+import { NotFoundError } from '../error/NotFoundError';
 import { Authenticator } from '../services/Authenticator';
 import { EmailFormatValidator } from '../services/EmailFormatValidator';
 import { HashManager } from '../services/HashManager';
@@ -50,9 +52,10 @@ export class UserBusiness {
     return token;
   }
 
-  public async login(input: userAuthenticatorCredentials): Promise<User> {
+  public async login(input: userAuthenticatorCredentials): Promise<string> {
     const { email, password } = input;
 
+    // TODO aceitar nickname como forma de login
     if (!email || !password) {
       throw new MissingDependenciesError(
         'Missing dependencies: "email" and "password"'
@@ -66,6 +69,25 @@ export class UserBusiness {
     passwordFormatValidator.validate(password);
 
     const userDatabase = new UserDatabase();
-    const user = userDatabase.getByEmail(email);
+    const user = await userDatabase.getByEmail(email);
+
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+
+    const hashManager = new HashManager();
+    const passwordMatch = hashManager.compare(password, user.getPassword());
+
+    if (!passwordMatch) {
+      throw new InvalidCredentialsError('Invalid password');
+    }
+
+    const authenticator = new Authenticator();
+    const token = authenticator.generateToken({
+      id: user.getId(),
+      role: user.getRole(),
+    });
+
+    return token;
   }
 }
