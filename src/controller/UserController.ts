@@ -7,10 +7,15 @@ export class UserController {
       const { name, nickname, email, password } = request.body;
 
       const userBusiness = new UserBusiness();
-      await userBusiness.signup({ name, nickname, email, password });
+      const token = await userBusiness.signup({
+        name,
+        nickname,
+        email,
+        password,
+      });
 
       // TODO gerar token
-      response.json({ message: 'Success' });
+      response.json({ message: 'Success', token });
     } catch (error) {
       response
         .status(error.code || 500)
