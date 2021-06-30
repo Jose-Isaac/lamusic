@@ -2,6 +2,7 @@ import { UserDatabase } from '../data/UserDatabase';
 import { User } from '../entites/User';
 import { ConflictError } from '../error/ConflictError';
 import { MissingDependenciesError } from '../error/MissingDependenciesError';
+import { EmailFormatValidator } from '../services/EmailFormatValidator';
 import { HashManager } from '../services/HashManager';
 import { IdGenerator } from '../services/IdGenerator';
 import { PasswordFormatValidator } from '../services/PasswordFormatValidator';
@@ -17,12 +18,11 @@ export class UserBusiness {
       );
     }
 
-    // TODO validar email
+    const emailFormatValidator = new EmailFormatValidator();
+    emailFormatValidator.validate(email);
 
     const passwordFormatValidator = new PasswordFormatValidator();
-
     passwordFormatValidator.validate(password);
-    // TODO validar password
 
     const userDatabase = new UserDatabase();
     const thisEmailExist = await userDatabase.getByEmail(email);
