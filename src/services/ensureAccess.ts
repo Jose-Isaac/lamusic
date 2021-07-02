@@ -18,8 +18,6 @@ export const ensureAccess = (
     const tokenData = hashManager.getData(token);
 
     if (tokenData) {
-      console.log('passou');
-
       next();
     }
   } catch (error) {
