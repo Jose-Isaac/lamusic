@@ -11,9 +11,9 @@ export class MusicController {
       const musicBusiness = new MusicBusiness();
       await musicBusiness.create({ title, genresIds, albumId }, token);
 
-      response.json({ message: 'Success' });
+      return response.json({ message: 'Success' });
     } catch (error) {
-      response
+      return response
         .status(error.code || 500)
         .json({ message: error.sqlMessage || error.message });
     }

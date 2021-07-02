@@ -10,9 +10,9 @@ export class GenreController {
       const genreBusiness = new GenreBusiness();
       const genre = await genreBusiness.create(name);
 
-      response.json({ message: 'Success', genre });
+      return response.json({ message: 'Success', genre });
     } catch (error) {
-      response
+      return response
         .status(error.code || 500)
         .json({ message: error.sqlMessage || error.message });
     }

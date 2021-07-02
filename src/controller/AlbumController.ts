@@ -10,9 +10,9 @@ export class AlbumController {
       const albumBusiness = new AlbumBusiness();
       const album = await albumBusiness.create(name);
 
-      response.json({ message: 'Success', album });
+      return response.json({ message: 'Success', album });
     } catch (error) {
-      response
+      return response
         .status(error.code || 500)
         .json({ message: error.sqlMessage || error.message });
     }
