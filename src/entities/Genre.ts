@@ -1,15 +1,8 @@
 export class Genre {
-  constructor(
-    private readonly id: number,
-    private readonly extern_id: string,
-    private name: string
-  ) {}
+  constructor(private readonly id: string, private name: string) {}
 
-  public getId(): number {
+  public getId(): string {
     return this.id;
-  }
-  public getExternId(): string {
-    return this.extern_id;
   }
   public getName(): string {
     return this.name;
