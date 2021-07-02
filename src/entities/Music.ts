@@ -5,10 +5,10 @@ export class Music {
     private readonly extern_id: string,
     private title: string,
     private author_id: number,
-    private created_at: Date,
-    private updated_at: Date,
     private album: string,
-    private genre: Array<Genre>,
+    private genre: Array<string>,
+    private created_at?: Date,
+    private updated_at?: Date,
     private id?: number
   ) {}
 
@@ -24,16 +24,16 @@ export class Music {
   public getAuthorId(): number {
     return this.author_id;
   }
-  public getCreatedAt(): Date {
+  public getCreatedAt(): Date | undefined {
     return this.created_at;
   }
-  public getUpdatedAt(): Date {
+  public getUpdatedAt(): Date | undefined {
     return this.updated_at;
   }
   public getAlbum(): string {
     return this.album;
   }
-  public getGenre(): Array<Genre> {
+  public getGenre(): Array<string> {
     return this.genre;
   }
 
@@ -43,7 +43,7 @@ export class Music {
   public setAlbum(album: string): void {
     this.album = album;
   }
-  public setGenre(genre: Genre): void {
+  public setGenre(genre: string): void {
     this.genre.push(genre);
   }
 }

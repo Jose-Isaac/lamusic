@@ -1,5 +1,5 @@
 import { UserDatabase } from '../data/UserDatabase';
-import { User } from '../entites/User';
+import { User } from '../entities/User';
 import { ConflictError } from '../error/ConflictError';
 import { InvalidCredentialsError } from '../error/InvalidCredentialsError';
 import { MissingDependenciesError } from '../error/MissingDependenciesError';
