@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
-import { GenreBusiness } from '../business/GenreBusiness';
+import { AlbumBusiness } from '../business/AlbumBusiness';
 import { BaseDatabase } from '../data/BaseDatabase';
 
-export class GenreController {
+export class AlbumController {
   async create(request: Request, response: Response) {
     try {
       const { name } = request.body;
 
-      const genreBusiness = new GenreBusiness();
-      const genre = await genreBusiness.create(name);
+      const albumBusiness = new AlbumBusiness();
+      const album = await albumBusiness.create(name);
 
-      return response.json({ message: 'Success', genre });
+      return response.json({ message: 'Success', album });
     } catch (error) {
       return response
         .status(error.code || 500)

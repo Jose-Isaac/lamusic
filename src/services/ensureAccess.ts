@@ -22,13 +22,13 @@ export const ensureAccess = (
     }
   } catch (error) {
     if (error.message === 'invalid signature') {
-      response.status(401).json({ error: 'Token is invalid!' });
+      return response.status(401).json({ error: 'Token is invalid!' });
     }
 
     if (error.message === 'jwt expired') {
-      response.status(401).json({ error: 'Token expired!' });
+      return response.status(401).json({ error: 'Token expired!' });
     }
 
-    response.status(error.code || 401).json({ error: error.message });
+    return response.status(error.code || 401).json({ error: error.message });
   }
 };
