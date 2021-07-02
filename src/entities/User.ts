@@ -11,6 +11,9 @@ export class User {
     private readonly id?: number
   ) {}
 
+  public getId(): number | undefined {
+    return this.id;
+  }
   public getExternId(): string {
     return this.extern_id;
   }
