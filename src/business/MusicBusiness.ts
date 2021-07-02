@@ -52,13 +52,7 @@ export class MusicBusiness {
         throw new NotFoundError('User not found');
       }
 
-      const music = new Music(
-        id,
-        title,
-        author.getId() as number,
-        albumId,
-        genresIds
-      );
+      const music = new Music(id, title, author.getId(), albumId, genresIds);
 
       const musicDatabase = new MusicDatabase();
       await musicDatabase.create(music);

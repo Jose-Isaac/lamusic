@@ -8,7 +8,7 @@ export class UserDatabase extends BaseDatabase {
     try {
       await this.getConnection().insert(user).into(UserDatabase.TABLE_NAME);
 
-      const userDatabase = await this.getById(user.getExternId());
+      const userDatabase = await this.getById(user.getId());
 
       return userDatabase as User;
     } catch (error) {
@@ -37,7 +37,7 @@ export class UserDatabase extends BaseDatabase {
     try {
       const result = await this.getConnection()
         .select()
-        .where({ extern_id: id })
+        .where({ id: id })
         .into(UserDatabase.TABLE_NAME);
 
       if (!result.length || !result[0].name) {
@@ -53,7 +53,6 @@ export class UserDatabase extends BaseDatabase {
   private toUserModel(result: any): User {
     const {
       id,
-      extern_id,
       name,
       nickname,
       email,
@@ -64,15 +63,14 @@ export class UserDatabase extends BaseDatabase {
     } = result;
 
     const user = new User(
-      extern_id,
+      id,
       name,
       nickname,
       email,
       password,
       role,
       created_at,
-      updated_at,
-      id
+      updated_at
     );
 
     return user;

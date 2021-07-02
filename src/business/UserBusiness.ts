@@ -37,23 +37,17 @@ export class UserBusiness {
       }
 
       const idGenerator = new IdGenerator();
-      const extern_id = idGenerator.generate();
+      const id = idGenerator.generate();
 
       const hashManager = new HashManager();
       const hashPassword = await hashManager.hash(password);
 
-      const userForDatabase = new User(
-        extern_id,
-        name,
-        nickname,
-        email,
-        hashPassword
-      );
+      const userForDatabase = new User(id, name, nickname, email, hashPassword);
       const user = await userDatabase.create(userForDatabase);
 
       const authenticator = new Authenticator();
       const token = authenticator.generateToken({
-        id: user.getExternId(),
+        id: user.getId(),
         role: user.getRole(),
       });
 
@@ -96,7 +90,7 @@ export class UserBusiness {
 
       const authenticator = new Authenticator();
       const token = authenticator.generateToken({
-        id: user.getExternId(),
+        id: user.getId(),
         role: user.getRole(),
       });
 

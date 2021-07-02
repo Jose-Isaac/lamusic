@@ -1,21 +1,17 @@
 export class User {
   constructor(
-    private readonly extern_id: string,
+    private readonly id: string,
     private name: string,
     private nickname: string,
     private email: string,
     private password: string,
     private role?: string,
     private created_at?: Date,
-    private updated_at?: Date,
-    private readonly id?: number
+    private updated_at?: Date
   ) {}
 
-  public getId(): number | undefined {
+  public getId(): string {
     return this.id;
-  }
-  public getExternId(): string {
-    return this.extern_id;
   }
   public getName(): string {
     return this.name;
