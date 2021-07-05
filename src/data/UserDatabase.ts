@@ -4,13 +4,13 @@ import { BaseDatabase } from './BaseDatabase';
 export class UserDatabase extends BaseDatabase {
   private static TABLE_NAME = 'lamusic_users';
 
-  public async create(user: User): Promise<User> {
+  public async create(user: User): Promise<User | false> {
     try {
       await this.getConnection().insert(user).into(UserDatabase.TABLE_NAME);
 
       const userDatabase = await this.getById(user.getId());
 
-      return userDatabase as User;
+      return userDatabase;
     } catch (error) {
       throw new Error(error.sqlMessage || error.message);
     }

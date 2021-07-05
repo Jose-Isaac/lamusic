@@ -2,12 +2,14 @@ import { MusicDatabase } from '../data/MusicDatabase';
 import { UserDatabase } from '../data/UserDatabase';
 import { Music } from '../entities/Music';
 import { BaseError } from '../error/BaseError';
+import { ConflictError } from '../error/ConflictError';
 import { InvalidFormatError } from '../error/InvalidFormatError';
 import { MissingDependenciesError } from '../error/MissingDependenciesError';
 import { NotFoundError } from '../error/NotFoundError';
 import { Authenticator } from '../services/Authenticator';
 import { IdGenerator } from '../services/IdGenerator';
 import { musicInputDTO } from '../types/music';
+import { RelationshipMusicGenreBusiness } from './RelationshipMusicGenreBusiness.';
 
 export class MusicBusiness {
   public async create(input: musicInputDTO, token: string) {
@@ -52,11 +54,40 @@ export class MusicBusiness {
         throw new NotFoundError('User not found');
       }
 
-      const music = new Music(id, title, author.getId(), albumId, genresIds);
+      const musicForDatabase = new Music(id, title, author.getId(), albumId);
 
       const musicDatabase = new MusicDatabase();
-      await musicDatabase.create(music);
+      const music = await musicDatabase.create(musicForDatabase);
+
+      if (!music) {
+        throw new BaseError(
+          'internal error registering music, please try again',
+          500
+        );
+      }
+
+      const relationshipMusicGenreBusiness =
+        new RelationshipMusicGenreBusiness();
+      const genres = await relationshipMusicGenreBusiness.create(
+        genresIds,
+        music.getId()
+      );
+
+      if (!genres) {
+        throw new BaseError(
+          'internal error registering relationship music genre, please try again',
+          500
+        );
+      }
+
+      return;
     } catch (error) {
+      if (
+        error.message.includes('Duplicate') &&
+        error.message.includes("key 'title'")
+      ) {
+        throw new ConflictError('Music already registered under this title');
+      }
       throw new BaseError(error.sqlMessage || error.message, error.code || 500);
     }
   }
