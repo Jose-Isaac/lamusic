@@ -28,4 +28,17 @@ export class GenreBusiness {
       throw new BaseError(error.sqlMessage || error.message, error.code || 500);
     }
   }
+  async getAll(): Promise<Array<Genre>> {
+    try {
+      const genreDatabase = new GenreDatabase();
+      const genres = await genreDatabase.getAll();
+
+      return genres;
+    } catch (error) {
+      if (error.message.includes('Duplicate')) {
+        throw new ConflictError('Genre already registered under this name');
+      }
+      throw new BaseError(error.sqlMessage || error.message, error.code || 500);
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import { Genre } from '../entities/Genre';
+import { NotFoundError } from '../error/NotFoundError';
 import { BaseDatabase } from './BaseDatabase';
 
 export class GenreDatabase extends BaseDatabase {
@@ -6,6 +7,22 @@ export class GenreDatabase extends BaseDatabase {
   async create(genre: Genre) {
     try {
       await this.getConnection().insert(genre).into(GenreDatabase.TABLE_NAME);
+    } catch (error) {
+      throw new Error(error.sqlMessage || error.message);
+    }
+  }
+
+  async getAll() {
+    try {
+      const result = await this.getConnection()
+        .select('*')
+        .into(GenreDatabase.TABLE_NAME);
+
+      if (!result.length) {
+        throw new NotFoundError('no gender found');
+      }
+
+      return result;
     } catch (error) {
       throw new Error(error.sqlMessage || error.message);
     }
