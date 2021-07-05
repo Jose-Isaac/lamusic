@@ -6,7 +6,6 @@ export class Music {
     private title: string,
     private author_id: string,
     private album_id: string,
-    private genres: Array<string>,
     private created_at?: Date,
     private updated_at?: Date
   ) {}
@@ -29,14 +28,20 @@ export class Music {
   public getAlbumId(): string {
     return this.album_id;
   }
-  public getGenres(): Array<string> {
-    return this.genres;
-  }
 
   public setTitle(title: string): void {
     this.title = title;
   }
-  public setGenres(genre: string): void {
-    this.genres.push(genre);
+
+  public static toMusicObjectModel(music: Music, genres: Genre[]) {
+    return {
+      id: music.getId(),
+      title: music.getTitle(),
+      author_id: music.getAuthorId(),
+      album_id: music.getAlbumId(),
+      created_at: music.getCreatedAt(),
+      updated_at: music.getUpdatedAt(),
+      genres: genres,
+    };
   }
 }

@@ -45,6 +45,13 @@ export class UserBusiness {
       const userForDatabase = new User(id, name, nickname, email, hashPassword);
       const user = await userDatabase.create(userForDatabase);
 
+      if (!user) {
+        throw new BaseError(
+          'internal error registering user, please try again',
+          500
+        );
+      }
+
       const authenticator = new Authenticator();
       const token = authenticator.generateToken({
         id: user.getId(),

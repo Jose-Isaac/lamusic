@@ -10,4 +10,12 @@ export class GenreDatabase extends BaseDatabase {
       throw new Error(error.sqlMessage || error.message);
     }
   }
+
+  private toGenreModel(result: any): Genre {
+    const { id, name } = result;
+
+    const genre = new Genre(id, name);
+
+    return genre;
+  }
 }
