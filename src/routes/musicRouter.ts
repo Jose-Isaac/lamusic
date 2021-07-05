@@ -7,5 +7,6 @@ const musicRouter = express.Router();
 const userController = new MusicController();
 
 musicRouter.post('/', ensureAccess, userController.create);
+musicRouter.get('/', ensureAccess, userController.getAll);
 
 export { musicRouter };

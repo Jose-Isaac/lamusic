@@ -1,4 +1,5 @@
 import { Music } from '../entities/Music';
+import { NotFoundError } from '../error/NotFoundError';
 import { BaseDatabase } from './BaseDatabase';
 
 export class MusicDatabase extends BaseDatabase {
@@ -27,6 +28,28 @@ export class MusicDatabase extends BaseDatabase {
       }
 
       return this.toMusicModel(result[0]);
+    } catch (error) {
+      throw new Error(error.sqlMessage || error.message);
+    }
+  }
+
+  public async getAllByUserId(userId: string): Promise<Music[]> {
+    try {
+      const result = await this.getConnection()
+        .select('*')
+        .where({ author_id: userId })
+        .into(MusicDatabase.TABLE_NAME);
+
+      if (!result.length) {
+        throw new NotFoundError('no music registered');
+      }
+
+      const musics: Music[] = [];
+      for (let music of result) {
+        musics.push(this.toMusicModel(music));
+      }
+
+      return musics;
     } catch (error) {
       throw new Error(error.sqlMessage || error.message);
     }

@@ -23,4 +23,21 @@ export class MusicController {
 
     await BaseDatabase.destroyConnection();
   }
+
+  public async getAll(request: Request, response: Response) {
+    try {
+      const token = request.headers.authorization as string;
+
+      const musicBusiness = new MusicBusiness();
+      const musics = await musicBusiness.getAll(token);
+
+      response.json({ message: 'Success', musics });
+    } catch (error) {
+      response
+        .status(error.code || 500)
+        .json({ message: error.sqlMessage || error.message });
+    }
+
+    await BaseDatabase.destroyConnection();
+  }
 }

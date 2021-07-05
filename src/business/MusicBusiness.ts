@@ -1,4 +1,5 @@
 import { MusicDatabase } from '../data/MusicDatabase';
+import { RelationshipMusicGenreDatabase } from '../data/RelationshipMusicGenreDatabase';
 import { UserDatabase } from '../data/UserDatabase';
 import { Music } from '../entities/Music';
 import { BaseError } from '../error/BaseError';
@@ -88,6 +89,32 @@ export class MusicBusiness {
       ) {
         throw new ConflictError('Music already registered under this title');
       }
+      throw new BaseError(error.sqlMessage || error.message, error.code || 500);
+    }
+  }
+
+  public async getAll(token: string) {
+    try {
+      const hashManager = new Authenticator();
+      const tokenData = hashManager.getData(token);
+
+      const musicDatabase = new MusicDatabase();
+      const musics = await musicDatabase.getAllByUserId(tokenData.id);
+
+      const relationshipMusicGenreDatabase =
+        new RelationshipMusicGenreDatabase();
+
+      const musicsWithGenres = [];
+      for (let music of musics) {
+        const genres = await relationshipMusicGenreDatabase.getGenresByMusic(
+          music.getId()
+        );
+
+        musicsWithGenres.push({ ...music, genres });
+      }
+
+      return musicsWithGenres;
+    } catch (error) {
       throw new BaseError(error.sqlMessage || error.message, error.code || 500);
     }
   }
