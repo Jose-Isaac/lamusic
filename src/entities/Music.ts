@@ -33,7 +33,7 @@ export class Music {
     this.title = title;
   }
 
-  public static toMusicObject(music: Music, genres: Genre[]) {
+  public static toMusicObjectModel(music: Music, genres: Genre[]) {
     return {
       id: music.getId(),
       title: music.getTitle(),

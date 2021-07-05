@@ -9,9 +9,12 @@ export class MusicController {
       const { title, genresIds, albumId } = request.body;
 
       const musicBusiness = new MusicBusiness();
-      await musicBusiness.create({ title, genresIds, albumId }, token);
+      const music = await musicBusiness.create(
+        { title, genresIds, albumId },
+        token
+      );
 
-      return response.json({ message: 'Success' });
+      return response.json({ message: 'Success', music });
     } catch (error) {
       return response
         .status(error.code || 500)
