@@ -19,7 +19,7 @@ Cadastre suas musicas favoritas no lamusic
 
 ### Sobre
 
-<p>Com o lamusic vocês cadastra e acessa sua músicas favoritas em qualquer lugar e a qualquer hora..</p>
+<p>Com o lamusic vocês cadastra e acessa suas músicas favoritas em qualquer lugar e a qualquer hora..</p>
 
 ### Features
 
