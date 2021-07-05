@@ -32,4 +32,16 @@ export class Music {
   public setTitle(title: string): void {
     this.title = title;
   }
+
+  public static toMusicObject(music: Music, genres: Genre[]) {
+    return {
+      id: music.getId(),
+      title: music.getTitle(),
+      author_id: music.getAuthorId(),
+      album_id: music.getAlbumId(),
+      created_at: music.getCreatedAt(),
+      updated_at: music.getUpdatedAt(),
+      genres: genres,
+    };
+  }
 }
