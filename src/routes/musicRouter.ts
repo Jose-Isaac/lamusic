@@ -8,5 +8,6 @@ const userController = new MusicController();
 
 musicRouter.post('/', ensureAccess, userController.create);
 musicRouter.get('/', ensureAccess, userController.getAll);
+musicRouter.get('/:id', ensureAccess, userController.getById);
 
 export { musicRouter };

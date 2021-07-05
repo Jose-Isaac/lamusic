@@ -118,4 +118,31 @@ export class MusicBusiness {
       throw new BaseError(error.sqlMessage || error.message, error.code || 500);
     }
   }
+
+  public async getById(musicId: any) {
+    try {
+      const idGenerator = new IdGenerator();
+
+      if (!idGenerator.isValid(musicId)) {
+        throw new InvalidFormatError('invalid format: music id');
+      }
+
+      const musicDatabase = new MusicDatabase();
+      const music = await musicDatabase.getById(musicId);
+
+      const relationshipMusicGenreDatabase =
+        new RelationshipMusicGenreDatabase();
+
+      const genres = await relationshipMusicGenreDatabase.getGenresByMusic(
+        musicId
+      );
+
+      return {
+        ...music,
+        genres,
+      };
+    } catch (error) {
+      throw new BaseError(error.sqlMessage || error.message, error.code || 500);
+    }
+  }
 }
