@@ -14,9 +14,9 @@ export class MusicController {
         token
       );
 
-      return response.json({ message: 'Success', music });
+      response.json({ message: 'Success', music });
     } catch (error) {
-      return response
+      response
         .status(error.code || 500)
         .json({ message: error.sqlMessage || error.message });
     }
