@@ -7,5 +7,6 @@ const genreRouter = express.Router();
 const genreController = new GenreController();
 
 genreRouter.post('/', ensureAccess, genreController.create);
+genreRouter.get('/', ensureAccess, genreController.getAll);
 
 export { genreRouter };

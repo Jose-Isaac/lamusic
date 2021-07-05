@@ -19,4 +19,19 @@ export class GenreController {
 
     await BaseDatabase.destroyConnection();
   }
+
+  async getAll(request: Request, response: Response) {
+    try {
+      const genreBusiness = new GenreBusiness();
+      const genres = await genreBusiness.getAll();
+
+      response.json({ message: 'Success', genres });
+    } catch (error) {
+      response
+        .status(error.code || 500)
+        .json({ message: error.sqlMessage || error.message });
+    }
+
+    await BaseDatabase.destroyConnection();
+  }
 }
