@@ -6,8 +6,8 @@ export class User {
     private email: string,
     private password: string,
     private role?: string,
-    private created_at?: Date,
-    private updated_at?: Date
+    private created_at?: string,
+    private updated_at?: string
   ) {}
 
   public getId(): string {
@@ -28,10 +28,10 @@ export class User {
   public getRole(): string | undefined {
     return this.role;
   }
-  public getCreatedAt(): Date | undefined {
+  public getCreatedAt(): string | undefined {
     return this.created_at;
   }
-  public getUpdatedAt(): Date | undefined {
+  public getUpdatedAt(): string | undefined {
     return this.updated_at;
   }
 
@@ -47,7 +47,7 @@ export class User {
   public setPassword(password: string): void {
     this.password = password;
   }
-  public setUpdatedAt(updated_at: Date): void {
+  public setUpdatedAt(updated_at: string): void {
     this.updated_at = updated_at;
   }
 }

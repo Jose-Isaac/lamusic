@@ -7,19 +7,21 @@ export class UserController {
     try {
       const { name, nickname, email, password } = request.body;
 
+      console.log(name);
+
       const userBusiness = new UserBusiness();
-      const token = await userBusiness.signup({
+      const data = await userBusiness.signup({
         name,
         nickname,
         email,
         password,
       });
 
-      response.json({ message: 'Success', token });
+      response.json({ message: 'Success', token: data.token, user: data.user });
     } catch (error) {
       response
         .status(error.code || 500)
-        .json({ message: error.sqlMessage || error.message });
+        .send({ message: error.message || error.sqlMessage });
     }
 
     await BaseDatabase.destroyConnection();
@@ -30,9 +32,9 @@ export class UserController {
       const { email, password } = request.body;
 
       const userBusiness = new UserBusiness();
-      const token = await userBusiness.login({ email, password });
+      const data = await userBusiness.login({ email, password });
 
-      response.json({ message: 'Success', token });
+      response.json({ message: 'Success', token: data.token, user: data.user });
     } catch (error) {
       response
         .status(error.code || 500)

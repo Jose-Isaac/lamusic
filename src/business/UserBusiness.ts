@@ -10,10 +10,14 @@ import { EmailFormatValidator } from '../services/EmailFormatValidator';
 import { HashManager } from '../services/HashManager';
 import { IdGenerator } from '../services/IdGenerator';
 import { PasswordFormatValidator } from '../services/PasswordFormatValidator';
-import { userAuthenticatorCredentials, userInputDTO } from '../types/user';
+import {
+  DataReturnLoginAndSignUp,
+  userAuthenticatorCredentials,
+  userInputDTO,
+} from '../types/user';
 
 export class UserBusiness {
-  public async signup(input: userInputDTO): Promise<string> {
+  public async signup(input: userInputDTO): Promise<DataReturnLoginAndSignUp> {
     try {
       const { name, nickname, email, password } = input;
 
@@ -58,13 +62,22 @@ export class UserBusiness {
         role: user.getRole(),
       });
 
-      return token;
+      return { token, user: { name, nickname } };
     } catch (error) {
+      if (
+        error.message.includes('Duplicate') &&
+        error.message.includes("key 'nickname'")
+      ) {
+        throw new ConflictError('nickname already in use');
+      }
+      console.log(error);
       throw new BaseError(error.sqlMessage || error.message, error.code || 500);
     }
   }
 
-  public async login(input: userAuthenticatorCredentials): Promise<string> {
+  public async login(
+    input: userAuthenticatorCredentials
+  ): Promise<DataReturnLoginAndSignUp> {
     try {
       const { email, password } = input;
 
@@ -101,7 +114,10 @@ export class UserBusiness {
         role: user.getRole(),
       });
 
-      return token;
+      return {
+        token,
+        user: { name: user.getName(), nickname: user.getNickname() },
+      };
     } catch (error) {
       throw new BaseError(error.sqlMessage || error.message, error.code || 500);
     }

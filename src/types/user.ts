@@ -14,3 +14,11 @@ export type AuthenticationData = {
   id: string;
   role?: string;
 };
+
+export type DataReturnLoginAndSignUp = {
+  token: string;
+  user: {
+    name: string;
+    nickname: string;
+  };
+};
