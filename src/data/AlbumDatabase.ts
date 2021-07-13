@@ -11,4 +11,14 @@ export class AlbumDatabase extends BaseDatabase {
       throw new Error(error.sqlMessage || error.message);
     }
   }
+  async getAll() {
+    try {
+      const result = await this.getConnection()
+        .select('*')
+        .into(AlbumDatabase.TABLE_NAME);
+      return result;
+    } catch (error) {
+      throw new Error(error.sqlMessage || error.message);
+    }
+  }
 }

@@ -19,4 +19,19 @@ export class AlbumController {
 
     await BaseDatabase.destroyConnection();
   }
+
+  async getAll(request: Request, response: Response) {
+    try {
+      const albumBusiness = new AlbumBusiness();
+      const albums = await albumBusiness.getAll();
+
+      response.json({ message: 'Success', albums });
+    } catch (error) {
+      response
+        .status(error.code || 500)
+        .json({ message: error.sqlMessage || error.message });
+    }
+
+    await BaseDatabase.destroyConnection();
+  }
 }
