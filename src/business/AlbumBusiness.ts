@@ -28,4 +28,14 @@ export class AlbumBusiness {
       throw new BaseError(error.sqlMessage || error.message, error.code || 500);
     }
   }
+  async getAll() {
+    try {
+      const albumDatabase = new AlbumDatabase();
+      const albums = await albumDatabase.getAll();
+
+      return albums;
+    } catch (error) {
+      throw new BaseError(error.sqlMessage || error.message, error.code || 500);
+    }
+  }
 }
